@@ -24,8 +24,8 @@ app.get('/chat', (req, res, next) =>{
 
 app.post('/chat', (req, res, next) =>{
     const msg = {
-        name : req.body.name.toString(),
-        comment : req.body.comment.toString(),
+        name : req.body.name,
+        comment : req.body.comment,
         createdDate : new Date(),
     };
     chat.insert(msg).then((createdMsg) => {
