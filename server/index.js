@@ -2,6 +2,25 @@ const express = require('express');
 const cors = require('cors');
 const monk = require('monk');
 
+//STOMP
+const http = require('http');
+const sockjs = require('sockjs');
+
+const echo = sockjs.createServer({ prefix:'/echo'});
+echo.on('connection', (conn) =>{
+    console.log(`STOMP CONNECTION`);
+    conn.on('data', (msg) =>{
+        console.log(`msg : ${msg}`);
+        conn.write(msg);
+    });
+    conn.on('close', () => {});
+});
+const stompServer = http.createServer();
+echo.installHandlers(stompServer);
+stompServer.listen(9999,'0.0.0.0','',(res)=>{
+    console.log(`STOMP LISTENING`);
+});
+
 const app = express();
 const db = monk(process.env.MONGO_ADDR || 'localhost/chat');
 const port = process.env.PORT || 4000;
@@ -33,6 +52,6 @@ app.post('/chat', (req, res, next) =>{
     })
 });
 
-app.listen(port, () =>{
-    console.log(`Listening on ${port}`);
-})
+// app.listen(port, () =>{
+//     console.log(`Listening on ${port}`);
+// })

@@ -24,6 +24,16 @@
 
 		</div>
 	</main>
-	<script src="index.js"></script>
+    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js">
+    document.addEventListener("DOMContentLoaded", () =>{
+        WebSocket.ini();
+    })
+
+    function connect(){
+        var socket = new SockJS("/websockethandler");
+        stompClient = Stomp.over(socket);
+    }
+    </script>
 </body>
 </html>
